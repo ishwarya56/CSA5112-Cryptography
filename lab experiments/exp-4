@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <ctype.h>
+
+int main() {
+    char text[100];
+    int a, b, i, x;
+    printf("Enter the plaintext: ");
+    fgets(text, sizeof(text), stdin);
+    printf("Enter value of a: ");
+    scanf("%d", &a);
+    printf("Enter value of b: ");
+    scanf("%d", &b);
+    for (i = 0; text[i] != '\0'; i++) {
+        if (isalpha(text[i])) {
+            if (isupper(text[i])) {
+                x = text[i] - 'A';
+                text[i] = ((a * x + b) % 26) + 'A';
+            } 
+            else {
+                x = text[i] - 'a';
+                text[i] = ((a * x + b) % 26) + 'a';
+            }
+        }
+    }
+    printf("Encrypted text: %s", text);
+    return 0;
+}
