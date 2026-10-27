@@ -1,0 +1,29 @@
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(void) {
+    char cipher[1000];
+    int a = 3, b = 15, inv = 9;
+
+    printf("Enter ciphertext: ");
+    if (!fgets(cipher, sizeof(cipher), stdin))
+        return 1;
+
+    printf("Plaintext: ");
+    for (int i = 0; cipher[i] != '\0'; i++) {
+        if (isupper((unsigned char)cipher[i])) {
+            int y = cipher[i] - 'A';
+            int x = (inv * (y - b + 26)) % 26;
+            putchar('A' + x);
+        } else if (islower((unsigned char)cipher[i])) {
+            int y = cipher[i] - 'a';
+            int x = (inv * (y - b + 26)) % 26;
+            putchar('a' + x);
+        } else {
+            putchar(cipher[i]);
+        }
+    }
+    return 0;
+}
