@@ -1,0 +1,61 @@
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+char sq[5][5] = {
+    {'M','F','H','I','K'},
+    {'U','N','O','P','Q'},
+    {'Z','V','W','X','Y'},
+    {'E','L','A','R','G'},
+    {'D','S','T','B','C'}
+};
+
+void locate(char ch, int *r, int *c) {
+    if (ch == 'J') ch = 'I';
+    for (*r = 0; *r < 5; (*r)++)
+        for (*c = 0; *c < 5; (*c)++)
+            if (sq[*r][*c] == ch) return;
+}
+
+int main(void) {
+    char input[] =
+        "Must see you over Cadogan West. Coming at once.";
+    char s[200], out[200];
+    int n = 0, k = 0;
+
+    for (int i = 0; input[i]; i++)
+        if (isalpha((unsigned char)input[i])) {
+            char ch = toupper((unsigned char)input[i]);
+            s[n++] = (ch == 'J') ? 'I' : ch;
+        }
+    s[n] = '\0';
+
+    for (int i = 0; i < n;) {
+        char a = s[i++];
+        char b;
+
+        if (i >= n) b = 'X';
+        else if (s[i] == a) b = 'X';
+        else b = s[i++];
+
+        int r1,c1,r2,c2;
+        locate(a,&r1,&c1);
+        locate(b,&r2,&c2);
+
+        if (r1 == r2) {
+            out[k++] = sq[r1][(c1+1)%5];
+            out[k++] = sq[r2][(c2+1)%5];
+        } else if (c1 == c2) {
+            out[k++] = sq[(r1+1)%5][c1];
+            out[k++] = sq[(r2+1)%5][c2];
+        } else {
+            out[k++] = sq[r1][c2];
+            out[k++] = sq[r2][c1];
+        }
+    }
+
+    out[k] = '\0';
+    printf("Ciphertext: %s\n", out);
+    return 0;
+}
