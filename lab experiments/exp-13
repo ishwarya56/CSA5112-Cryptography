@@ -1,0 +1,52 @@
+
+#include <stdio.h>
+
+int main(void) {
+    /* Columns of P are HE and LP:
+       P = [7 11; 4 15]
+       Columns of C are BL and DE:
+       C = [1 3; 11 4] */
+
+    int P[2][2] = {{7, 11}, {4, 15}};
+    int C[2][2] = {{1, 3}, {11, 4}};
+    int det = (P[0][0]*P[1][1]
+             - P[0][1]*P[1][0]) % 26;
+
+    if (det < 0) det += 26;
+
+    int inv = -1;
+    for (int i = 1; i < 26; i++)
+        if ((det * i) % 26 == 1) {
+            inv = i;
+            break;
+        }
+
+    if (inv == -1) {
+        printf("Cannot recover key: P is not invertible.\n");
+        return 0;
+    }
+
+    int adj[2][2] = {
+        {P[1][1], -P[0][1]},
+        {-P[1][0], P[0][0]}
+    };
+    int Pinv[2][2];
+
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++) {
+            Pinv[i][j] = (inv * adj[i][j]) % 26;
+            if (Pinv[i][j] < 0) Pinv[i][j] += 26;
+        }
+
+    printf("Recovered key matrix:\n");
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            int v = 0;
+            for (int k = 0; k < 2; k++)
+                v += C[i][k] * Pinv[k][j];
+            printf("%d ", (v % 26 + 26) % 26);
+        }
+        printf("\n");
+    }
+    return 0;
+}
