@@ -1,0 +1,39 @@
+
+#include <stdio.h>
+#include <string.h>
+
+int main(void) {
+    char cipher[] =
+    "53‡‡†305))6*;4826)4‡.)4‡);806*;48†8¶60))85;;]8*;:‡*8†83";
+    char key[128], plain[128];
+    int i;
+    for (i = 0; i < 128; i++) {
+        key[i] = (char)i;
+        plain[i] = (char)i;
+    }
+
+    printf("Enter ciphertext symbols and their plaintext "
+           "replacements as pairs.\n");
+    printf("Example: A a\n");
+    printf("Enter the number of mappings: ");
+
+    int n;
+    if (scanf("%d", &n) != 1 || n < 0 || n > 100)
+        return 1;
+
+    for (i = 0; i < n; i++) {
+        char c, p;
+        printf("Cipher symbol and plaintext symbol: ");
+        if (scanf(" %c %c", &c, &p) != 2)
+            return 1;
+        if ((unsigned char)c < 128) {
+            key[(unsigned char)c] = c;
+            plain[(unsigned char)c] = p;
+        }
+    }
+
+    printf("\nCiphertext:\n%s\n", cipher);
+    printf("Use a complete, verified mapping to decode "
+           "the entire message.\n");
+    return 0;
+}
