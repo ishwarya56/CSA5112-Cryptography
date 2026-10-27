@@ -1,0 +1,41 @@
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(void) {
+    char input[] =
+        "meet me at the usual place at ten rather than eight oclock";
+    char p[200], c[200], d[200];
+    int n = 0;
+
+    for (int i = 0; input[i]; i++)
+        if (isalpha((unsigned char)input[i]))
+            p[n++] = tolower((unsigned char)input[i]) - 'a';
+    if (n % 2) p[n++] = 'x' - 'a';
+
+    for (int i = 0; i < n; i += 2) {
+        int x = p[i], y = p[i+1];
+        c[i]   = (9*x + 4*y) % 26;
+        c[i+1] = (5*x + 7*y) % 26;
+    }
+
+    /* Inverse matrix: [5 12; 15 25] */
+    for (int i = 0; i < n; i += 2) {
+        int x = c[i], y = c[i+1];
+        d[i]   = (5*x + 12*y) % 26;
+        d[i+1] = (15*x + 25*y) % 26;
+    }
+
+    printf("Plaintext: ");
+    for (int i = 0; i < n; i++) putchar(p[i] + 'a');
+
+    printf("\nCiphertext: ");
+    for (int i = 0; i < n; i++) putchar(c[i] + 'a');
+
+    printf("\nDecrypted: ");
+    for (int i = 0; i < n; i++) putchar(d[i] + 'a');
+
+    putchar('\n');
+    return 0;
+}
