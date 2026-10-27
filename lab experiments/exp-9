@@ -1,0 +1,63 @@
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(void) {
+    char key[100], square[26] = "";
+    char cipher[] =
+        "KXJEYUREBEZWEHEWRYTUHEYFS"
+        "KREHEGOYFIWTTTUOLKSYCAJPO"
+        "BOTEIZONTXBYBNTGONE YCUZWR"
+        "GDSONSXBOUYWRHEBAAHYUSEDQ";
+    int used[26] = {0}, n = 0;
+
+    printf("Enter Playfair keyword: ");
+    if (scanf("%99s", key) != 1) return 1;
+
+    for (int pass = 0; pass < 2; pass++) {
+        char *s = pass == 0 ? key : "ABCDEFGHIKLMNOPQRSTUVWXYZ";
+        for (int i = 0; s[i]; i++) {
+            char c = toupper((unsigned char)s[i]);
+            if (c == 'J') c = 'I';
+            if (c >= 'A' && c <= 'Z' && !used[c-'A']) {
+                used[c-'A'] = 1;
+                square[n++] = c;
+            }
+        }
+    }
+
+    printf("Decrypted text: ");
+    for (int i = 0; cipher[i]; ) {
+        while (cipher[i] == ' ' || cipher[i] == '\n') i++;
+        if (!cipher[i]) break;
+
+        char a = toupper((unsigned char)cipher[i++]);
+        while (cipher[i] == ' ' || cipher[i] == '\n') i++;
+        if (!cipher[i]) break;
+        char b = toupper((unsigned char)cipher[i++]);
+
+        if (a == 'J') a = 'I';
+        if (b == 'J') b = 'I';
+
+        int p = strchr(square, a) - square;
+        int q = strchr(square, b) - square;
+        int r1 = p / 5, c1 = p % 5;
+        int r2 = q / 5, c2 = q % 5;
+
+        if (r1 == r2) {
+            a = square[r1*5 + (c1+4)%5];
+            b = square[r2*5 + (c2+4)%5];
+        } else if (c1 == c2) {
+            a = square[((r1+4)%5)*5 + c1];
+            b = square[((r2+4)%5)*5 + c2];
+        } else {
+            a = square[r1*5+c2];
+            b = square[r2*5+c1];
+        }
+        putchar(a);
+        putchar(b);
+    }
+    putchar('\n');
+    return 0;
+}
