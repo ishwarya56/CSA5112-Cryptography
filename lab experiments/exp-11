@@ -1,0 +1,21 @@
+
+#include <stdio.h>
+#include <math.h>
+
+int main(void) {
+    long double fact = 1.0L;
+
+    for (int i = 2; i <= 25; i++)
+        fact *= i;
+
+    printf("Total keys = 25! = %.0Lf\n", fact);
+    printf("Approximate power of 2 = 2^%.2Lf\n",
+           log2l(fact));
+
+    printf("Effective keys under cyclic row/column shifts"
+           " = 24! = %.0Lf\n", fact / 25.0L);
+    printf("Effective approximate power = 2^%.2Lf\n",
+           log2l(fact / 25.0L));
+
+    return 0;
+}
