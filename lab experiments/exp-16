@@ -1,0 +1,54 @@
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main()
+{
+    char cipher[1000], plain[1000];
+    char frequency[] = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
+    int count[26] = {0};
+    int i, j, top;
+
+    printf("Enter ciphertext: ");
+    fgets(cipher, sizeof(cipher), stdin);
+
+    printf("Enter number of possible plaintexts: ");
+    scanf("%d", &top);
+
+    if (top < 1) top = 1;
+    if (top > 26) top = 26;
+
+    for (i = 0; cipher[i] != '\0'; i++)
+        if (isalpha((unsigned char)cipher[i]))
+            count[toupper((unsigned char)cipher[i]) - 'A']++;
+
+    printf("\nLetter Frequency:\n");
+
+    for (i = 0; i < 26; i++)
+        if (count[i] > 0)
+            printf("%c = %d\n", 'A' + i, count[i]);
+
+    printf("\nPossible plaintexts:\n");
+
+    for (j = 0; j < top; j++)
+    {
+        for (i = 0; cipher[i] != '\0'; i++)
+        {
+            if (isupper((unsigned char)cipher[i]))
+                plain[i] = frequency[
+                    (strchr("ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                    cipher[i]) - "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + j) % 26];
+            else if (islower((unsigned char)cipher[i]))
+                plain[i] = tolower(frequency[
+                    (toupper((unsigned char)cipher[i]) - 'A' + j) % 26]);
+            else
+                plain[i] = cipher[i];
+        }
+
+        plain[i] = '\0';
+        printf("Candidate %d: %s", j + 1, plain);
+    }
+
+    return 0;
+}
