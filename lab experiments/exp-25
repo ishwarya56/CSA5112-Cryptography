@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+int gcd(int a, int b) {
+    while(b != 0) {
+        int t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
+int main() {
+    int n = 77, m = 14;
+    int g = gcd(n, m);
+
+    printf("GCD = %d\n", g);
+
+    if(g > 1 && g < n)
+        printf("Factor found: %d and %d\n", g, n/g);
+    else
+        printf("No factor found");
+
+    return 0;
+}
