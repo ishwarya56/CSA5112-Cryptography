@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main() {
+    char text[] = "HELLO";
+    int i;
+
+    printf("Plaintext: %s\n", text);
+    printf("Character values: ");
+
+    for(i = 0; text[i] != '\0'; i++)
+        printf("%d ", text[i] - 'A');
+
+    printf("\nAttack: Frequency analysis\n");
+    return 0;
+}
