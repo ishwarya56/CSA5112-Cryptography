@@ -1,0 +1,62 @@
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char text[1000];
+    char freq[] = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
+    int count[26] = {0};
+    int order[26], i, j, temp, top;
+
+    printf("Enter ciphertext: ");
+    fgets(text, sizeof(text), stdin);
+
+    for (i = 0; text[i]; i++) {
+        if (text[i] >= 'a' && text[i] <= 'z')
+            count[text[i] - 'a']++;
+        else if (text[i] >= 'A' && text[i] <= 'Z')
+            count[text[i] - 'A']++;
+    }
+
+    for (i = 0; i < 26; i++)
+        order[i] = i;
+
+    for (i = 0; i < 26; i++) {
+        for (j = i + 1; j < 26; j++) {
+            if (count[order[j]] > count[order[i]]) {
+                temp = order[i];
+                order[i] = order[j];
+                order[j] = temp;
+            }
+        }
+    }
+
+    printf("Enter number of possible plaintexts: ");
+    scanf("%d", &top);
+
+    if (top < 1) return 0;
+    if (top > 10) top = 10;
+
+    for (int t = 0; t < top; t++) {
+        char map[26];
+
+        for (i = 0; i < 26; i++)
+            map[i] = freq[i];
+
+        printf("\nPossible plaintext %d:\n", t + 1);
+
+        for (i = 0; text[i]; i++) {
+            char c = text[i];
+
+            if (c >= 'a' && c <= 'z')
+                printf("%c", map[(c - 'a' + t) % 26]);
+            else if (c >= 'A' && c <= 'Z')
+                printf("%c", map[(c - 'A' + t) % 26]);
+            else
+                putchar(c);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
