@@ -1,0 +1,77 @@
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char cipher[1000];
+    char freq[] = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
+    int count[26] = {0};
+    int order[26];
+    int i, j, temp, top;
+
+    printf("Enter ciphertext: ");
+    fgets(cipher, sizeof(cipher), stdin);
+
+    // Count letter frequencies
+    for (i = 0; cipher[i] != '\0'; i++) {
+        if (cipher[i] >= 'A' && cipher[i] <= 'Z')
+            count[cipher[i] - 'A']++;
+        else if (cipher[i] >= 'a' && cipher[i] <= 'z')
+            count[cipher[i] - 'a']++;
+    }
+
+    // Sort letters by frequency
+    for (i = 0; i < 26; i++)
+        order[i] = i;
+
+    for (i = 0; i < 26; i++) {
+        for (j = i + 1; j < 26; j++) {
+            if (count[order[j]] > count[order[i]]) {
+                temp = order[i];
+                order[i] = order[j];
+                order[j] = temp;
+            }
+        }
+    }
+
+    printf("Enter number of possible plaintexts: ");
+    scanf("%d", &top);
+
+    if (top < 1) {
+        printf("Invalid number");
+        return 0;
+    }
+
+    if (top > 10)
+        top = 10;
+
+    // Generate possible plaintexts
+    for (int t = 0; t < top; t++) {
+        char map[26];
+
+        for (i = 0; i < 26; i++)
+            map[order[i]] = freq[i];
+
+        printf("\nPossible plaintext %d:\n", t + 1);
+
+        for (i = 0; cipher[i] != '\0'; i++) {
+            char ch = cipher[i];
+
+            if (ch >= 'A' && ch <= 'Z')
+                putchar(map[ch - 'A']);
+            else if (ch >= 'a' && ch <= 'z')
+                putchar(map[ch - 'a'] + 32);
+            else
+                putchar(ch);
+        }
+
+        // Change mapping for next candidate
+        if (t < top - 1) {
+            temp = map[order[t % 26]];
+            map[order[t % 26]] = map[order[(t + 1) % 26]];
+            map[order[(t + 1) % 26]] = temp;
+        }
+    }
+
+    return 0;
+}
