@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main() {
+    int e = 31, phi = 3480, d;
+
+    for(d = 1; d < phi; d++) {
+        if((e * d) % phi == 1) {
+            printf("Private key d = %d\n", d);
+            break;
+        }
+    }
+    return 0;
+}
