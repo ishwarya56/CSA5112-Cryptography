@@ -1,0 +1,52 @@
+
+#include <stdio.h>
+#include <string.h>
+
+#define KEY 5
+#define N 8
+
+int main() {
+    unsigned char p[N], ecb[N], cbc[N], cfb[N];
+    unsigned char prev = 0, feedback = 0;
+    int i, n;
+
+    printf("Enter number of characters (1-8): ");
+    scanf("%d", &n);
+
+    if (n < 1 || n > 8) {
+        printf("Invalid length");
+        return 0;
+    }
+
+    printf("Enter plaintext: ");
+    scanf("%8s", p);
+
+    // Padding: 0x80 followed by zeros
+    if (n < N) {
+        p[n++] = 0x80;
+        while (n < N)
+            p[n++] = 0;
+    }
+
+    printf("\nECB: ");
+    for (i = 0; i < N; i++) {
+        ecb[i] = p[i] ^ KEY;
+        printf("%02X ", ecb[i]);
+    }
+
+    printf("\nCBC: ");
+    for (i = 0; i < N; i++) {
+        cbc[i] = p[i] ^ prev ^ KEY;
+        prev = cbc[i];
+        printf("%02X ", cbc[i]);
+    }
+
+    printf("\nCFB: ");
+    for (i = 0; i < N; i++) {
+        cfb[i] = p[i] ^ feedback ^ KEY;
+        feedback = cfb[i];
+        printf("%02X ", cfb[i]);
+    }
+
+    return 0;
+}
