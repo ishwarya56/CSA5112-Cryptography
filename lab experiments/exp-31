@@ -1,0 +1,29 @@
+
+#include <stdio.h>
+
+int main() {
+    int K, X, T, X2, MAC;
+
+    printf("Enter key (0-255): ");
+    scanf("%d", &K);
+
+    printf("Enter one-block message X (0-255): ");
+    scanf("%d", &X);
+
+    T = X ^ K;
+
+    printf("\nCBC-MAC of one-block message = %d", T);
+
+    X2 = X ^ T;
+
+    printf("\nSecond block (X XOR T) = %d", X2);
+
+    MAC = (X2 ^ T) ^ K;
+
+    printf("\nCBC-MAC of two-block message = %d", MAC);
+
+    if (MAC == T)
+        printf("\nBoth MAC values are equal.");
+
+    return 0;
+}
