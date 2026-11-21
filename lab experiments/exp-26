@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main() {
+    int old_n = 3233;
+    int old_d = 2753;
+
+    printf("Old modulus = %d\n", old_n);
+    printf("Old private key leaked = %d\n", old_d);
+    printf("Generating new keys with same modulus is unsafe.\n");
+    printf("Bob must generate a new modulus and key pair.\n");
+
+    return 0;
+}
