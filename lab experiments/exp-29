@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int main() {
+    int lanes = 25;
+    int rate = 16;
+    int capacity = lanes - rate;
+    int rounds = 0;
+
+    printf("Total lanes = %d\n", lanes);
+    printf("Rate lanes = %d\n", rate);
+    printf("Capacity lanes = %d\n", capacity);
+
+    // Simplified propagation model
+    printf("Initially nonzero lanes = %d\n", rate);
+    printf("Initially zero lanes = %d\n", capacity);
+
+    rounds = 1;  // Assume one propagation step fills the remaining lanes
+
+    printf("Rounds required = %d\n", rounds);
+    printf("All lanes become nonzero after %d round(s)\n", rounds);
+
+    return 0;
+}
